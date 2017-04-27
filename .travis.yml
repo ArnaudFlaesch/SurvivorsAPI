@@ -12,11 +12,17 @@ env:
 before_install:
   - npm install istanbul mocha coveralls codacy-coverage -g
 
+before_script:
+  - sleep 15
+
 script: istanbul cover _mocha --report lcovonly
 
 after_success:
   - cat ./coverage/lcov.info | coveralls
   - cat ./coverage/lcov.info | codacy-coverage
+
+services:
+  - mongodb
 
 notifications:
    email:

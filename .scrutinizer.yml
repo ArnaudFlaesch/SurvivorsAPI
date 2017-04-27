@@ -4,6 +4,7 @@ build:
             - npm install -g mocha istanbul
     environment:
             node: '6.9'
+            mongodb: '3.2'
 
     tests:
         override:
