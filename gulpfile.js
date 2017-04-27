@@ -1,24 +1,35 @@
-var gulp = require('gulp'),
-  nodemon = require('gulp-nodemon'),
-  plumber = require('gulp-plumber'),
-  livereload = require('gulp-livereload');
+const gulp = require("gulp"),
+    jshint = require("gulp-jshint"),
+    nodemon = require("gulp-nodemon"),
+    refresh = require("gulp-refresh"),
+    runSequence = require("run-sequence");;
 
-gulp.task('livereload', function () {
-  livereload.listen();
-  nodemon({
-    script: 'server.js',
-    stdout: false
-  }).on('readable', function () {
-    this.stdout.on('data', function (chunk) {
-      if(/^Express server listening on port/.test(chunk)){
-        livereload.changed(__dirname);
-      }
-    });
-    this.stdout.pipe(process.stdout);
-    this.stderr.pipe(process.stderr);
-  });
+const sourceDir = "./src";
+const testDir = "./test";
+
+gulp.task("jshint", function () {
+    return gulp.src([sourceDir+"/*.js", sourceDir+"/**/*.js"])
+        .pipe(jshint())
+        .pipe(jshint.reporter("default"))
+        .pipe(jshint.reporter("fail"));
 });
 
-gulp.task('default', [
-  'livereload'
-]);
+gulp.task("livereload", function () {
+    nodemon({
+        script: sourceDir/+"server.js",
+        stdout: true
+    });
+});
+
+gulp.task("watch", function() {
+    refresh.listen();
+    gulp.watch([sourceDir+"/*.js", sourceDir+"/**/*.js"], ["jshint"]).on('change', refresh.changed);
+});
+
+gulp.task("dev", function() {
+    runSequence(
+        ["jshint"],
+        ["livereload"],
+        ["watch"]
+    );
+});

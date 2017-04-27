@@ -1,6 +1,7 @@
-var server = require('../server'),
+var server = require('../src/server'),
     assert = require('assert'),
     http = require('http');
+
 var port = process.env.PORT || 3000;
 
 describe('server', function () {
