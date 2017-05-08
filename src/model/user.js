@@ -1,18 +1,19 @@
 var mongoose = require("mongoose");
+
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-    email: String,
-    nickname: String,
-    password: String,
-    health: Number,
-    hunger: Number,
-    latitude: Number,
-    longitude: Number,
-    bag : [{
-        itemName: String,
-        itemDescription: String,
-        itemType: Number
+    _email: String,
+    _nickname: String,
+    _password: String,
+    _health: Number,
+    _hunger: Number,
+    _latitude: Number,
+    _longitude: Number,
+    _bag : [{
+        _itemName: String,
+        _itemDescription: String,
+        _itemType: Number
     }]
 });
 

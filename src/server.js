@@ -3,11 +3,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
-const server = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const router = express.Router();
 const userRouter = require("./routes/userRouter");
+
+const server = express();
+const router = express.Router();
 const port = process.env.PORT || 3000;
 mongoose.connect("mongodb://localhost/survivors");
 

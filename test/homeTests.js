@@ -5,7 +5,7 @@ const server = require("../src/server"),
 
 describe("server", function () {
     before(function () {
-        server.listen(port)
+        server.listen(port);
     });
 
     after(function () {

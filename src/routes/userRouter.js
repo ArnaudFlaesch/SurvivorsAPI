@@ -1,9 +1,9 @@
 "use strict";
 
 var express = require("express");
-var userRouter = express.Router();
-
 var User = require("../model/user");
+
+var userRouter = express.Router();
 
 userRouter.use(function(req, res, next) {
     next();
@@ -28,7 +28,7 @@ userRouter.get("/info/:user_id", function(req, res, next) {
 });
 
 userRouter.post("/login", function(req, res, next) {
-    User.findOne({ nickname: req.body.nickname, password: req.body.password}, function(err, user) {
+    User.findOne({ _nickname: req.body._nickname, _password: req.body._password}, function(err, user) {
         if (err) {
             next(err);
         }
@@ -40,7 +40,7 @@ userRouter.post("/login", function(req, res, next) {
 
 userRouter.post("/register", function(req, res, next) {
 
-    User.find({ $or:[ {"email":req.body.email}, {"nickname":req.body.nickname} ]},
+    User.find({ $or:[ {"_email":req.body._email}, {"_nickname":req.body._nickname} ]},
         function(err, user){
             if (err) {
                 next(err);
@@ -69,7 +69,7 @@ userRouter.put("/update", function(req, res, next) {
         if (err) {
             next(err);
         }
-        userFromDatabase.email = req.body.email;
+        userFromDatabase._email = req.body._email;
         userFromDatabase.save(function(err) {
             if (err) {
                 next(err);
