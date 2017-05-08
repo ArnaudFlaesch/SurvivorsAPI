@@ -1,10 +1,9 @@
-var server = require('../src/server'),
+const server = require("../src/server"),
     assert = require('assert'),
-    http = require('http');
+    request = require("supertest"),
+    should = require('should');
 
-var port = process.env.PORT || 3000;
-
-describe('server', function () {
+describe("server", function () {
     before(function () {
         server.listen(port)
     });
@@ -14,11 +13,14 @@ describe('server', function () {
     });
 });
 
-describe('Server status and Message', function () {
-    it('status response should be equal 200', function (done) {
-        http.get('http://localhost:'+port+'/', function (response) {
-            assert.equal(response.statusCode, 200);
-            done();
-        });
+describe("Server status and Message", function () {
+    it("status response should be equal 200", function (done) {
+        request(server)
+            .get('/')
+            .expect(200)
+            .end(function(err, res) {
+                assert.equal(res.body.message, "Welcome to Survivors API !");
+                done();
+            });
     });
 });

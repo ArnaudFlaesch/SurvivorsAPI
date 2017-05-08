@@ -2,17 +2,19 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
 const server = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const router = express.Router();
-const userRouter = require("./routes/user");
+const userRouter = require("./routes/userRouter");
 const port = process.env.PORT || 3000;
 mongoose.connect("mongodb://localhost/survivors");
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(cors());
+server.use(methodOverride());
 
 router.get("/", function(req, res) {
     res.json({ message: "Welcome to Survivors API !" });
@@ -31,9 +33,11 @@ server.use(function(req, res, next) {
     next(err);
 });
 
-server.use(function(err, req, res, next) {
-    res.status(err.status || 500);
+server.use(function (err, req, res, next) {
+    res.status(500).send({ error : err.message});
 });
 
 server.listen(port);
 console.log("Starting server on port " + port);
+
+module.exports = server;

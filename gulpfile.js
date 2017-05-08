@@ -10,8 +10,7 @@ const testDir = "./test";
 gulp.task("jshint", function () {
     return gulp.src([sourceDir+"/*.js", sourceDir+"/**/*.js"])
         .pipe(jshint())
-        .pipe(jshint.reporter("default"))
-        .pipe(jshint.reporter("fail"));
+        .pipe(jshint.reporter("default"));
 });
 
 gulp.task("livereload", function () {
