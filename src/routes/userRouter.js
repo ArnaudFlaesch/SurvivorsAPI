@@ -1,9 +1,9 @@
 "use strict";
 
-var express = require("express");
-var User = require("../model/user");
+const express = require("express");
+const User = require("../model/user");
 
-var userRouter = express.Router();
+const userRouter = express.Router();
 
 userRouter.use(function(req, res, next) {
     next();
@@ -33,13 +33,12 @@ userRouter.post("/login", function(req, res, next) {
             next(err);
         }
         else {
-            res.send(user);
+            res.json(user);
         }
     });
 });
 
 userRouter.post("/register", function(req, res, next) {
-
     User.find({ $or:[ {"_email":req.body._email}, {"_nickname":req.body._nickname} ]},
         function(err, user){
             if (err) {
@@ -47,6 +46,8 @@ userRouter.post("/register", function(req, res, next) {
             }
             else {
                 if (user.length === 0) {
+                    req.body._health = 100;
+                    req.body._hunger = 100;
                     User.create(req.body, function(err, user) {
                         if (err) {
                             next(err);

@@ -8,6 +8,8 @@ var UserSchema = new Schema({
     _password: String,
     _health: Number,
     _hunger: Number,
+    _positionX: Number,
+    _positionY: Number,
     _latitude: Number,
     _longitude: Number,
     _bag : [{

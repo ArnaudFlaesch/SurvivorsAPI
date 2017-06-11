@@ -1,21 +1,31 @@
 "use strict";
 
-const express = require("express");
-const bodyParser = require("body-parser");
-const methodOverride = require("method-override");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const userRouter = require("./routes/userRouter");
+const express = require("express"),
+    bodyParser = require("body-parser"),
+    methodOverride = require("method-override"),
+    cors = require("cors"),
+    mongoose = require("mongoose"),
+    userRouter = require("./routes/userRouter"),
+    app = require("express")(),
+    server = require("http").Server(app),
+    router = express.Router(),
+    io = require("socket.io")(server),
+    userSocket = require("./sockets/userSocket"),
+    port = process.env.PORT || 3000;
 
-const server = express();
-const router = express.Router();
-const port = process.env.PORT || 3000;
 mongoose.connect("mongodb://localhost/survivors");
 
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(bodyParser.json());
-server.use(cors());
-server.use(methodOverride());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors());
+app.use(methodOverride());
+
+io.on("connection", function(socket){
+    socket.on("playerLoggedIn", function(data) {
+        socket.broadcast.emit("playerLoggedIn", data);
+    });
+});
+
 
 router.get("/", function(req, res) {
     res.json({ message: "Welcome to Survivors API !" });
@@ -25,17 +35,17 @@ router.use(function(req, res, next) {
     next();
 });
 
-server.use("/", router);
-server.use("/user", userRouter);
+app.use("/", router);
+app.use("/user", userRouter);
 
-server.use(function(req, res, next) {
+app.use(function(req, res, next) {
     var err = new Error("Not Found");
     err.status = 404;
     next(err);
 });
 
-server.use(function (err, req, res, next) {
-    res.status(500).send({ error : err.message});
+app.use(function (err, req, res, next) {
+    res.status(500).json({ error : err.message});
 });
 
 server.listen(port);
