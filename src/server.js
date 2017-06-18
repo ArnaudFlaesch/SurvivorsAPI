@@ -23,10 +23,6 @@ app.use(methodOverride());
 
 io.on("connection", function (socket){
     userSocket.initSocket(socket);
-
-    io.on("disconnect", function() {
-
-    })
 });
 
 router.get("/", function (req, res) {

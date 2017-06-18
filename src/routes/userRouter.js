@@ -1,6 +1,7 @@
 "use strict";
 
-const express = require("express"),
+const bcrypt = require('bcrypt'),
+    express = require("express"),
     User = require("../model/user");
 
 const userRouter = express.Router();
@@ -28,12 +29,24 @@ userRouter.get("/info/:user_id", function (req, res, next) {
 });
 
 userRouter.post("/login", function (req, res, next) {
-    User.findOne({ "_nickname": req.body._nickname, "_password": req.body._password}, function (err, user) {
+    User.findOne({ "_nickname": req.body._nickname}, function (err, user) {
         if (err) {
             next(err);
         }
         else {
-            res.json(user);
+            if (user === null) {
+                next(new Error("Aucun utilisateur n'existe avec ce login."));
+            }
+            else {
+                bcrypt.compare(req.body._password, user._password, function(err, result) {
+                    if (result) {
+                        res.json(user);
+                    }
+                    else {
+                        next(new Error("Mot de passe invalide."));
+                    }
+                });
+            }
         }
     });
 });
@@ -50,14 +63,17 @@ userRouter.post("/register", function (req, res, next) {
                     req.body._hunger = 100;
                     req.body._positionX = Math.floor((Math.random() * 60) + 1) * 20;
                     req.body._positionY = Math.floor((Math.random() * 60) + 1) * 20;
-                    User.create(req.body, function (err, user) {
-                        if (err) {
-                            next(err);
-                        }
-                        else {
-                            res.send(user);
-                        }
-                    });
+                    bcrypt.hash(req.body._password, 10, function(err, hash) {
+                        req.body._password = hash;
+                        User.create(req.body, function (err, user) {
+                            if (err) {
+                                next(err);
+                            }
+                            else {
+                                res.send(user);
+                            }
+                        });
+                    })
                 }
                 else {
                     next(new Error("L'email ou le pseudo est déjà utilisé."));
@@ -65,7 +81,6 @@ userRouter.post("/register", function (req, res, next) {
             }
         });
 });
-
 
 userRouter.put("/update", function (req, res, next) {
     User.findById(req.body._id, function (err, userFromDatabase) {
