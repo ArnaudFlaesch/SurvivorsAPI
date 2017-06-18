@@ -2,21 +2,22 @@
  * Created by Arnaud on 17/05/2017.
  */
 
-var mongoose = require("mongoose");
+"use strict";
 
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose"),
+    Schema = mongoose.Schema,
 
-var CampSchema = new Schema({
-    _equipment: [{
-        _equipementType: String,
-        _equipmentLocationX: Number,
-        _equipmentLocationY: Number,
-    }],
-    _chests : [{
-        _itemName: String,
-        _itemDescription: String,
-        _itemType: Number
-    }]
-});
+    CampSchema = new Schema({
+        "_equipment": [{
+            "_equipementType": String,
+            "_equipmentLocationX": Number,
+            "_equipmentLocationY": Number
+        }],
+        "_chests ": [{
+            "_itemName": String,
+            "_itemDescription": String,
+            "_itemType": Number
+        }]
+    });
 
 module.exports = mongoose.model("Camp", CampSchema, "camp");

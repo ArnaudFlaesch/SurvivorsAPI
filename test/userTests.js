@@ -51,7 +51,6 @@ describe("User tests", function () {
             .send({ _nickname: "aflaesch", _password: "root"})
             .expect(200)
             .end(function(err, res) {
-                console.log(res.body);
                 assert.equal(res.body._nickname, "aflaesch");
                 done();
             });

@@ -1,21 +1,23 @@
-var mongoose = require("mongoose");
+"use strict";
 
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-var UserSchema = new Schema({
-    _email: String,
-    _nickname: String,
-    _password: String,
-    _health: Number,
-    _hunger: Number,
-    _positionX: Number,
-    _positionY: Number,
-    _latitude: Number,
-    _longitude: Number,
-    _bag : [{
-        _itemName: String,
-        _itemDescription: String,
-        _itemType: Number
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+    "_email": String,
+    "_nickname": String,
+    "_password": String,
+    "_health": Number,
+    "_hunger": Number,
+    "_positionX": Number,
+    "_positionY": Number,
+    "_latitude": Number,
+    "_longitude": Number,
+    "_bag ": [{
+        "_name": String,
+        "_description": String,
+        "_type": Number
     }]
 });
 

@@ -4,6 +4,9 @@
   "description": "Back-End de l'application mobile Survivors.",
   "homepage": "http://arnaudflaesch.github.io/",
   "private": true,
+  "engines": {
+    "node": "7.0.0"
+  },
   "scripts": {
     "start": "node src/server.js",
     "test": "mocha --recursive test"
@@ -11,14 +14,15 @@
   "dependencies": {
     "body-parser": "^1.13.3",
     "cors": "^2.8.3",
-    "express": "^4.13.3",
+    "express": "4.15.3",
     "method-override": "^2.3.8",
-    "mongoose": "^4.9.1",
-    "socket.io": "^2.0.1"
+    "mongoose": "4.10.6",
+    "socket.io": "2.0.3"
   },
   "devDependencies": {
     "assert": "^1.4.1",
-    "gulp": "^3.9.0",
+    "gulp": "3.9.1",
+    "gulp-eslint": "4.0.0",
     "gulp-jshint": "^2.0.4",
     "gulp-nodemon": "2.2.1",
     "gulp-refresh": "^1.1.0",

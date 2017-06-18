@@ -1,16 +1,16 @@
 "use strict";
 
-const express = require("express");
-const User = require("../model/user");
+const express = require("express"),
+    User = require("../model/user");
 
 const userRouter = express.Router();
 
-userRouter.use(function(req, res, next) {
+userRouter.use(function (req, res, next) {
     next();
 });
 
-userRouter.get("/list", function(req, res, next) {
-    User.find(function(err, users) {
+userRouter.get("/list", function (req, res, next) {
+    User.find(function (err, users) {
         if (err) {
             next(err);
         }
@@ -18,8 +18,8 @@ userRouter.get("/list", function(req, res, next) {
     });
 });
 
-userRouter.get("/info/:user_id", function(req, res, next) {
-    User.findById(req.params.user_id, function(err, user) {
+userRouter.get("/info/:user_id", function (req, res, next) {
+    User.findById(req.params.user_id, function (err, user) {
         if (err) {
             next(err);
         }
@@ -27,8 +27,8 @@ userRouter.get("/info/:user_id", function(req, res, next) {
     });
 });
 
-userRouter.post("/login", function(req, res, next) {
-    User.findOne({ _nickname: req.body._nickname, _password: req.body._password}, function(err, user) {
+userRouter.post("/login", function (req, res, next) {
+    User.findOne({ "_nickname": req.body._nickname, "_password": req.body._password}, function (err, user) {
         if (err) {
             next(err);
         }
@@ -38,9 +38,9 @@ userRouter.post("/login", function(req, res, next) {
     });
 });
 
-userRouter.post("/register", function(req, res, next) {
+userRouter.post("/register", function (req, res, next) {
     User.find({ $or:[ {"_email":req.body._email}, {"_nickname":req.body._nickname} ]},
-        function(err, user){
+        function (err, user){
             if (err) {
                 next(err);
             }
@@ -48,7 +48,9 @@ userRouter.post("/register", function(req, res, next) {
                 if (user.length === 0) {
                     req.body._health = 100;
                     req.body._hunger = 100;
-                    User.create(req.body, function(err, user) {
+                    req.body._positionX = Math.floor((Math.random() * 60) + 1) * 20;
+                    req.body._positionY = Math.floor((Math.random() * 60) + 1) * 20;
+                    User.create(req.body, function (err, user) {
                         if (err) {
                             next(err);
                         }
@@ -65,13 +67,13 @@ userRouter.post("/register", function(req, res, next) {
 });
 
 
-userRouter.put("/update", function(req, res, next) {
-    User.findById(req.body._id, function(err, userFromDatabase) {
+userRouter.put("/update", function (req, res, next) {
+    User.findById(req.body._id, function (err, userFromDatabase) {
         if (err) {
             next(err);
         }
         userFromDatabase._email = req.body._email;
-        userFromDatabase.save(function(err) {
+        userFromDatabase.save(function (err) {
             if (err) {
                 next(err);
             }
@@ -80,12 +82,12 @@ userRouter.put("/update", function(req, res, next) {
     });
 });
 
-userRouter.delete("/delete/:user_id", function(req, res, next) {
-    User.remove({_id: req.params.user_id}, function(err, user) {
+userRouter.delete("/delete/:user_id", function (req, res, next) {
+    User.remove({"_id": req.params.user_id}, function (err, user) {
         if (err) {
             next(err);
         }
-        res.json({ message: "User successfully deleted." });
+        res.json({"message": "User successfully deleted."});
     });
 });
 
