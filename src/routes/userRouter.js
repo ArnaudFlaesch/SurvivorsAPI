@@ -2,6 +2,8 @@
 
 const bcrypt = require('bcrypt'),
     express = require("express"),
+    foodModel = require("../model/food"),
+    materialModel = require("../model/material"),
     User = require("../model/user");
 
 const userRouter = express.Router();
@@ -52,7 +54,7 @@ userRouter.post("/login", function (req, res, next) {
 });
 
 userRouter.post("/register", function (req, res, next) {
-    User.find({ $or:[ {"_email":req.body._email}, {"_nickname":req.body._nickname} ]},
+    User.find({ $or:[ {"_email":req.body._email}, {"_nickname": req.body._nickname} ]},
         function (err, user){
             if (err) {
                 next(err);
@@ -61,8 +63,10 @@ userRouter.post("/register", function (req, res, next) {
                 if (user.length === 0) {
                     req.body._health = 100;
                     req.body._hunger = 100;
-                    req.body._positionX = Math.floor((Math.random() * 60) + 1) * 20;
-                    req.body._positionY = Math.floor((Math.random() * 60) + 1) * 20;
+                    req.body._inventory = [];
+                    req.body._inventory.push(foodModel);
+                    req.body._inventory.push(foodModel);
+                    req.body._inventory.push(materialModel);
                     bcrypt.hash(req.body._password, 10, function(err, hash) {
                         req.body._password = hash;
                         User.create(req.body, function (err, user) {

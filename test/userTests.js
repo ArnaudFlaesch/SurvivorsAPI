@@ -5,7 +5,8 @@
 const server = require("../src/server"),
     assert = require("assert"),
     request = require("supertest"),
-    should = require("should");
+    should = require("should"),
+    user = require("../src/model/user");
 
 describe("server", function () {
     before(function () {
@@ -42,7 +43,7 @@ describe("User tests", function () {
             .post("/user/register")
             .send({ _nickname: "aflaesch", _email: "aflaesch@gmail.com", _password: "root"})
             .expect(500)
-            .expect( {error: "L'email ou le pseudo est déjà utilisé."}, done);
+            .expect({error: "L'email ou le pseudo est déjà utilisé."}, done);
     });
 
     it("should log in an user", function (done) {
@@ -61,7 +62,7 @@ describe("User tests", function () {
             .get("/user/list")
             .expect(200)
             .end(function(err, res) {
-                assert.equal(res.body.length, 2);
+                assert.equal(res.body.length, 3);
                 done();
             });
     });
@@ -75,7 +76,7 @@ describe("User tests", function () {
                     .get("/user/info/"+res.body[0]._id)
                     .expect(200)
                     .end(function(err, res) {
-                        assert.equal(res.body._nickname, "aflaesch");
+                        assert.equal(res.body._nickname, "userInventoryTest");
                         done();
                     })
             });
@@ -98,7 +99,7 @@ describe("User tests", function () {
             });
     });
 
-    it("should delete he second user", function (done) {
+    it("should delete the second user", function (done) {
         request(server)
             .get("/user/list")
             .expect(200)
@@ -112,7 +113,7 @@ describe("User tests", function () {
                             .get("/user/list")
                             .expect(200)
                             .end(function(err, res) {
-                                assert.equal(res.body.length, 1);
+                                assert.equal(res.body.length, 2);
                                 done();
                             });
                     })

@@ -10,7 +10,8 @@ env:
   - NODE_ENV=travis
 
 before_install:
-  - npm install istanbul mocha coveralls codacy-coverage -g
+  - sudo apt-get install python make g++
+  - npm install istanbul mocha coveralls codacy-coverage node-gyp -g
 
 before_script:
   - sleep 15

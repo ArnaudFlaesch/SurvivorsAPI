@@ -9,6 +9,7 @@ const app = require("express")(),
     router = express.Router(),
     server = require("http").Server(app),
     io = require("socket.io")(server),
+    inventoryRouter = require("./routes/inventoryRouter"),
     userRouter = require("./routes/userRouter"),
     userSocket = require("./sockets/userSocket");
 
@@ -26,7 +27,7 @@ io.on("connection", function (socket){
 });
 
 router.get("/", function (req, res) {
-    res.json({message: "Welcome to Survivors API !"});
+    res.json({"message": "Welcome to Survivors API !"});
 });
 
 router.use(function (req, res, next) {
@@ -35,6 +36,7 @@ router.use(function (req, res, next) {
 
 app.use("/", router);
 app.use("/user", userRouter);
+app.use("/inventory", inventoryRouter);
 
 app.use(function (req, res, next) {
     var err = new Error("Not Found");
@@ -43,7 +45,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (err, req, res, next) {
-    res.status(500).json({error : err.message});
+    res.status(500).json({"error": err.message});
 });
 
 server.listen(port, function () {
