@@ -11,7 +11,7 @@ env:
   - NODE_ENV=travis
 
 before_install:
-  - npm cache clean
+  - npm cache clean --force
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -q
   - sudo apt-get install build-essential gcc-4.8 python make g++-4.8 -y
