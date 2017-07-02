@@ -9,6 +9,7 @@ node_js:
 
 env:
   - NODE_ENV=travis
+  - CXX=g++-4.8
 
 before_install:
   - npm cache clean --force
