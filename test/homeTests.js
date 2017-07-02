@@ -17,7 +17,7 @@ describe("server", function () {
 describe("Server status and Message", function () {
     it("status response should be equal 200", function (done) {
         User.remove({}, function(err) {
-            console.log('collection removed')
+            console.log("Collection removed");
         });
 
         request(server)
