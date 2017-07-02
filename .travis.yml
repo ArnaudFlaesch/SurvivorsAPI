@@ -17,7 +17,6 @@ before_install:
   - sudo apt-get update -q
   - sudo apt-get install build-essential gcc-4.8 python make g++-4.8 -y
   - npm install istanbul mocha coveralls codacy-coverage node-pre-gyp node-gyp -g
-  - node-gyp rebuild
 
 before_script:
   - sleep 15
